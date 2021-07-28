@@ -54,7 +54,9 @@ def read_pipeline(pipeline_file_name, markdown_file_name):
   pipelines_file.close()
 
 def read_activity(pipelines_file, act):
-  pipelines_file.write('\n * Name: __{0}__, Type: {1} \n'.format(act['name'], act['type']))
+  pipelines_file.write('\n * Name: __{0}__, Type: {1}  \n'.format(act['name'], act['type']))
+  if 'description' in act:
+    pipelines_file.write('Description: {0}\n'.format(act['description']))
   if len(act['dependsOn']) > 0:
     pipelines_file.write('\n   Dependencies:')
     for dep in act['dependsOn']:
