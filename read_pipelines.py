@@ -50,9 +50,12 @@ def read_pipeline(pipeline_file_name, markdown_file_name):
       pipelines_file.write('\n Description: {0} \n'.format(pipelines_data['properties']['description']))
     pipelines_file.write('\n\n ### Steps \n')
     for act in pipelines_data['properties']['activities']:
-      pipelines_file.write('\n * Name: __{0}__, Type: {1} \n'.format(act['name'], act['type']))
-      if len(act['dependsOn']) > 0:
-        pipelines_file.write('\n   Dependencies:')
-        for dep in act['dependsOn']:
-          pipelines_file.write('\n   * [{0}]({1}) ({2}) \n'.format(dep['activity'], '#'+dep['activity'].replace(' ', '-'), dep['dependencyConditions'][0]))
+      read_activity(pipelines_file, act)
   pipelines_file.close()
+
+def read_activity(pipelines_file, act):
+  pipelines_file.write('\n * Name: __{0}__, Type: {1} \n'.format(act['name'], act['type']))
+  if len(act['dependsOn']) > 0:
+    pipelines_file.write('\n   Dependencies:')
+    for dep in act['dependsOn']:
+      pipelines_file.write('\n   * [{0}]({1}) ({2}) \n'.format(dep['activity'], '#'+dep['activity'].replace(' ', '-'), dep['dependencyConditions'][0]))
