@@ -96,12 +96,15 @@ def read_query(pipelines_file, act):
         source_type = act['typeProperties']['source']['type']
         if source_type in supported_types:
             query_field_name = supported_types[source_type]['query_field_name']
-            query = act['typeProperties']['source'][query_field_name]
-            query = get_expression_value(query) if (is_expression(query)) else query
+            query = get_value(act['typeProperties']['source'][query_field_name])
             pipelines_file.write('\n<details>\n')
             pipelines_file.write('\n<summary>Query</summary>\n')
             pipelines_file.write('\n``` sql\n{0}\n```\n'.format(query))
             pipelines_file.write('\n</details>\n')
+
+
+def get_value(input):
+    return get_expression_value(input) if is_expression(input) else input
 
 
 def get_expression_value(expr):
