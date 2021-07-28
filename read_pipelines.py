@@ -83,7 +83,7 @@ def read_activity_dependencies(pipelines_file, act):
 
 def read_query(pipelines_file, act):
     """ Reads the query in the activity (if available) and writes
-    it to the file in a dropdown. """
+    it to the Markdown file in a drop-down field. """
     supported_types = {
         'SqlServerSource': {
             'query_field_name': 'sqlReaderQuery'
@@ -103,18 +103,20 @@ def read_query(pipelines_file, act):
             pipelines_file.write('\n</details>\n')
 
 
-def get_value(input):
-    return get_expression_value(input) if is_expression(input) else input
+def get_value(obj) -> str:
+    """ Fields in ADFs can be either a string or an ADF expression.
+    This method ensures that we always read the string value. """
+    return get_value_field(obj) if is_expression(obj) else obj
 
 
-def get_expression_value(expr):
-    """ Given an expression returns its value.
-     e.g. {"value": "some", "type": "Expression"} returns "some". """
-    return expr['value']
+def get_value_field(obj):
+    return obj['value']
 
 
-def is_expression(input):
-    """ Determines whether the input is a data factory expression.
-    e.g. {"value": "some", "type": "Expression"} """
-    if 'type' in input:
-        return input['type'] is 'Expression'
+def is_expression(obj):
+    """ Determines whether the input object is a data factory expression.
+    i.e. A dictionary like: {"value": "some", "type": "Expression"} """
+    if 'type' in obj:
+        return obj['type'] is 'Expression'
+    else:
+        return False
