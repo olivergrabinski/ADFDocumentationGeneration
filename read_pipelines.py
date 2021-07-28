@@ -56,6 +56,7 @@ def read_pipeline(pipeline_file_name, markdown_file_name):
 
 
 def read_activity(pipelines_file, act):
+    """ Reads an activity and writes its information to the Markdown file. """
     pipelines_file.write('\n * Name: __{0}__, Type: {1}  \n'.format(act['name'], act['type']))
     read_activity_description(pipelines_file, act)
     read_query(pipelines_file, act)
@@ -63,12 +64,15 @@ def read_activity(pipelines_file, act):
 
 
 def read_activity_description(pipelines_file, act):
+    """ Reads the activity description if available and
+    writes it to the Markdown file. """
     if 'description' in act:
         description = act['description']
         pipelines_file.write('Description: {0}\n'.format(description))
 
 
 def read_activity_dependencies(pipelines_file, act):
+    """ Reads the activity dependencies and writes them to the Markdown file. """
     if len(act['dependsOn']) > 0:
         pipelines_file.write('\n   Dependencies:')
         for dep in act['dependsOn']:
@@ -78,6 +82,8 @@ def read_activity_dependencies(pipelines_file, act):
 
 
 def read_query(pipelines_file, act):
+    """ Reads the query in the activity (if available) and writes
+    it to the file in a dropdown. """
     supported_types = {
         'SqlServerSource': {
             'query_field_name': 'sqlReaderQuery'
@@ -99,9 +105,13 @@ def read_query(pipelines_file, act):
 
 
 def get_expression_value(expr):
+    """ Given an expression returns its value.
+     e.g. {"value": "some", "type": "Expression"} returns "some". """
     return expr['value']
 
 
 def is_expression(input):
+    """ Determines whether the input is a data factory expression.
+    e.g. {"value": "some", "type": "Expression"} """
     if 'type' in input:
         return input['type'] is 'Expression'
