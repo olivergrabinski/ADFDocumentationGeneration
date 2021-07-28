@@ -30,7 +30,7 @@ def read_pipeline(pipeline_file_name, markdown_file_name):
 
   * the name of the pipeline
   * the description of the pipeline if available
-  * a list of its activities
+  * a list of its activities along with their descriptions.
   * a list of its dependencies together with the dependency condition
 
   Parameters
